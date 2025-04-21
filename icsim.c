@@ -26,7 +26,7 @@
 #endif
 
 #define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 768
+#define SCREEN_HEIGHT 487
 #define DOOR_LOCKED 0
 #define DOOR_UNLOCKED 1
 #define OFF 0
