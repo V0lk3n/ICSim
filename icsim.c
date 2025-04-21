@@ -25,8 +25,8 @@
 #define DATA_DIR "./data/"  // Needs trailing slash
 #endif
 
-#define SCREEN_WIDTH 1024
-#define SCREEN_HEIGHT 487
+#define SCREEN_WIDTH 692
+#define SCREEN_HEIGHT 329
 #define DOOR_LOCKED 0
 #define DOOR_UNLOCKED 1
 #define OFF 0
