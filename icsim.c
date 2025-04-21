@@ -421,7 +421,8 @@ int main(int argc, char *argv[]) {
 	exit(40);
   }
   window = SDL_CreateWindow("IC Simulator", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT,
-                            SDL_WINDOW_SHOWN); // | SDL_WINDOW_RESIZABLE);
+                          SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+
   if(window == NULL) {
 	printf("Window could not be shown\n");
   }
