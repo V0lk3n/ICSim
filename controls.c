@@ -81,6 +81,7 @@
 #define ACCEL_RATE 8.0 // 0-MAX_SPEED in seconds
 #define USB_CONTROLLER 0
 #define PS3_CONTROLLER 1
+#define PS4_CONTROLLER 2
 
 // For now, specific models will be done as constants.  Later
 // We should use a config file
@@ -285,7 +286,7 @@ void checkTurn() {
 // Takes R2 joystick value and converts it to throttle speed
 void accelerate(int value) {
 	// Check dead zones
-	if(gControllerType == PS3_CONTROLLER) {
+	if(gControllerType == PS3_CONTROLLER || gControllerType == PS4_CONTROLLER) {
 		// PS3 works different.  the value range is 0-32k
 		if (value < gLastAccelValue) {
 			throttle = -1;
@@ -411,7 +412,23 @@ void map_joy() {
 		gJoyX = PS3_X_ROT;
 		gJoyY = PS3_Y_ROT;
 		gJoyZ = PS3_Z_ROT;
- 		break; 
+ 		break;
+	case PS4_CONTROLLER:
+    		gButtonA = 1;   // e.g. Cross
+    		gButtonB = 2;   // e.g. Circle
+   		gButtonX = 0;   // e.g. Square
+    		gButtonY = 3;   // e.g. Triangle
+    		gButtonStart = 9;   // e.g. Options
+    		gButtonLock = 6;    // e.g. L1
+    		gButtonUnlock = 7;  // e.g. R1
+    		gAxisL2 = 4;        // May be analog trigger L2
+    		gAxisR2 = 5;        // Analog trigger R2
+    		gAxisRightH = 2;    // Right stick horizontal
+    		gAxisRightV = 3;    // Right stick vertical
+    		gAxisLeftH = 0;     // Left stick horizontal
+    		gAxisLeftV = 1;     // Left stick vertical
+    		break;
+
 	default:
 	printf("Unknown controller type for mapping\n");
   	}
@@ -422,13 +439,14 @@ void print_joy_info() {
 	printf("Number of Axes: %d\n", SDL_JoystickNumAxes(gJoystick));
 	printf("Number of Buttons: %d\n", SDL_JoystickNumButtons(gJoystick));
 	if(SDL_JoystickNumBalls(gJoystick) > 0) printf("Number of Balls: %d\n", SDL_JoystickNumBalls(gJoystick));
-        if(strncmp(SDL_JoystickNameForIndex(0), "PLAYSTATION(R)3 Controller", 25) == 0) {
-		// PS3 Rumble controller via BT
-		gControllerType = PS3_CONTROLLER;
-	}
-        if(strncmp(SDL_JoystickNameForIndex(0), "Sony PLAYSTATION(R)3 Controller", 30) == 0) {
-		// PS3 directly connected
-		gControllerType = PS3_CONTROLLER;
+	const char* name = SDL_JoystickNameForIndex(0);
+	printf("Name: %s\n", name);
+
+	if (strncmp(name, "PLAYSTATION(R)3 Controller", 25) == 0 ||
+    		strncmp(name, "Sony PLAYSTATION(R)3 Controller", 30) == 0) {
+    		gControllerType = PS3_CONTROLLER;
+	} else if (strstr(name, "Wireless Controller") || strstr(name, "DualShock 4")) {
+    		gControllerType = PS4_CONTROLLER;
 	}
 	map_joy();
 }
